@@ -26,4 +26,14 @@ export function closeDB(db: sqlite3.Database) {
     });
 }
 
- 
+export function loadWord(db: sqlite3.Database, callback: any) {
+    db.get('SELECT word FROM Word ORDER BY RANDOM() LIMIT 1', [], (err, row) => {
+        if (err) {
+            callback(err);
+        } else if (row) {
+            callback(null, row);
+        } else {
+            callback(new Error('No words found in the database'));
+        }
+    });
+}
