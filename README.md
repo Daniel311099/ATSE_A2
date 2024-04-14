@@ -1,5 +1,5 @@
 ## SETUP
-git clone https://github.com/Daniel311099/ATSE_A2.git
+git clone https://github.com/Daniel311099/ATSE_A2.git /n
 cd ATSE_A2
 
 ### Backend
