@@ -25,3 +25,5 @@ export function closeDB(db: sqlite3.Database) {
         console.log('Close the database connection.');
     });
 }
+
+ 
