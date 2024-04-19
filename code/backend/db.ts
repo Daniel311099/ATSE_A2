@@ -34,9 +34,10 @@ export function loadWord(
     const query = difficulty
         ? "SELECT word FROM Word WHERE difficulty = ? ORDER BY RANDOM() LIMIT 1"
         : "SELECT word FROM Word ORDER BY RANDOM() LIMIT 1";
+    const params = difficulty ? [difficulty] : [];
     db.get(
         query,
-        [],
+        params,
         (err, row) => {
             if (err) {
                 callback(err);
