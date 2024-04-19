@@ -7,14 +7,12 @@ import sqlite3 from "sqlite3";
 // });
 
 const DB_NAME = "mydatabase.db";
-const DB_NAME = "mydatabase.db";
 
 export function openDB() {
     return new sqlite3.Database(DB_NAME, (err) => {
         if (err) {
             return console.error(err.message);
         }
-        console.log("Connected to the SQlite database.");
         console.log("Connected to the SQlite database.");
     });
 }
@@ -24,7 +22,6 @@ export function closeDB(db: sqlite3.Database) {
         if (err) {
             return console.error(err.message);
         }
-        console.log("Close the database connection.");
         console.log("Close the database connection.");
     });
 }
