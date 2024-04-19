@@ -26,9 +26,16 @@ export function closeDB(db: sqlite3.Database) {
     });
 }
 
-export function loadWord(db: sqlite3.Database, callback: any) {
+export function loadWord(
+    db: sqlite3.Database,
+    difficulty: string | undefined,
+    callback: any
+) {
+    const query = difficulty
+        ? "SELECT word FROM Word WHERE difficulty = ? ORDER BY RANDOM() LIMIT 1"
+        : "SELECT word FROM Word ORDER BY RANDOM() LIMIT 1";
     db.get(
-        "SELECT word FROM Word ORDER BY RANDOM() LIMIT 1",
+        query,
         [],
         (err, row) => {
             if (err) {

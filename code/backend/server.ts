@@ -14,7 +14,9 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.get("/word", (req: Request, res: Response) => {
-    loadWord(db, (err: any, row: any) => {
+    const { difficulty } = req.query as any  // e.g., "Easy", "Medium", or "Hard"
+    console.log(difficulty);
+    loadWord(db, difficulty, (err: any, row: any) => {
         if (err) {
             res.status(500).send(err.message);
         }
