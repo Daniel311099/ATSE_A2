@@ -14,6 +14,9 @@ function App() {
     const [attempt, setAttempt] = useState<number>(0);
     const [win, setWin] = useState(false);
     const [difficulty, setDifficulty] = useState("Medium");
+    const [userId, setUserId] = useState<number | null>(null);
+    const [username, setUsername] = useState<string>("");
+    const [display, setDisplay] = useState<string>("");
 
     useEffect(() => {
         fetchWord();
@@ -33,6 +36,8 @@ function App() {
 
     return (
         <>
+            <h1>Hangman</h1>
+            <h2>{display}</h2>
             <ScoreAndAttempt score={score} wrongAttempt={attempt} />
             <HangMan wrongAttempt={attempt} />
 
@@ -75,7 +80,28 @@ function App() {
             >
                 RESET
             </button>
-            
+            <div>
+                <input value={username} onChange={(e) => setUsername(e.target.value)} />
+                <button
+                    onClick={() => {
+                        fetch("http://localhost:3000/user", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ username }),
+                        })
+                            .then((res) => res.json())
+                            .then((data) => {
+                                setUserId(data.id)
+                                setDisplay(`User ${username} created with id ${data.id}`)
+                            })
+                            .catch((err) => console.error(err));
+                    }}
+                >
+                    Register
+                </button>
+            </div>
         </>
     );
 }
