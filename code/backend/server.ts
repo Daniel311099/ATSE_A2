@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from "express";
 const cors = require("cors");
-import { addScore, closeDB, createUser, loadWord, openDB } from "./db";
+import { addScore, closeDB, createUser, getScores, loadWord, openDB } from "./db";
 
 const db = openDB();
 
@@ -47,6 +47,19 @@ app.post('/score', (req, res) => {
         res.send("Score added successfully");
     });
     
+});
+
+app.get('/score', (req, res) => {
+    const { difficulty } = req.query as any;
+
+    getScores(db, difficulty, (err: any, rows: any) => {
+        if (err) {
+            res
+                .status(500)
+                .send(err.message);
+        }
+        res.send(rows);
+    });
 });
 
 app.listen(port, () => {
