@@ -51,3 +51,52 @@ export function loadWord(
         }
     );
 }
+
+export function createUser(db: sqlite3.Database, username: string, callback: any) {
+    const query = `INSERT INTO User (username) VALUES (?)`;
+
+    db.run(query, [username], function(err) {
+        if (err) {
+            callback(err);
+        } else {
+            callback(null, this.lastID);
+        }
+    });
+}
+
+export function addScore(db: sqlite3.Database, user_id: number, score: number, difficulty: string, callback: any) {
+    const query = `INSERT INTO Score (user_id, score, difficulty) VALUES (?, ?, ?)`;
+
+    db.run(query, [user_id, score, difficulty], function(err) {
+        if (err) {
+            callback(err);
+        } else {
+            callback(null, this.lastID);
+        }
+    });
+}
+
+export function getScores(db: sqlite3.Database, difficulty: string | undefined, callback: any) {
+    let query = `SELECT * FROM Score JOIN Users ON Score.user_id = User.id`;
+
+    if (difficulty) {
+        query += ` WHERE difficulty = ?`;
+        query += ` ORDER BY score DESC`;
+        db.all(query, [difficulty], (err, rows) => {
+            if (err) {
+                callback(err);
+            } else {
+                callback(null, rows);
+            }
+        });
+    } else {
+        query += ` ORDER BY score DESC`;
+        db.all(query, [], (err, rows) => {
+            if (err) {
+                callback(err);
+            } else {
+                callback(null, rows);
+            }
+        });
+    }
+}

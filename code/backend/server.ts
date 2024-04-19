@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from "express";
 const cors = require("cors");
-import { closeDB, loadWord, openDB } from "./db";
+import { addScore, closeDB, createUser, getScores, loadWord, openDB } from "./db";
 
 const db = openDB();
 
@@ -22,6 +22,43 @@ app.get("/word", (req: Request, res: Response) => {
         }
         console.log(row);
         res.send(row.word);
+    });
+});
+
+app.post('/user', (req, res) => {
+    const { username } = req.body;
+    createUser(db, username, (err: any, lastID: any) => {
+        if (err) {
+            res.status(500).send(err.message);
+        }
+        res.send({ id: lastID });
+    });
+});
+
+app.post('/score', (req, res) => {
+    const { user_id, score, difficulty } = req.body;
+
+    addScore(db, user_id, score, difficulty, (err: any) => {
+        if (err) {
+            res
+                .status(500)
+                .send(err.message);
+        }
+        res.send("Score added successfully");
+    });
+    
+});
+
+app.get('/score', (req, res) => {
+    const { difficulty } = req.query as any;
+
+    getScores(db, difficulty, (err: any, rows: any) => {
+        if (err) {
+            res
+                .status(500)
+                .send(err.message);
+        }
+        res.send(rows);
     });
 });
 
