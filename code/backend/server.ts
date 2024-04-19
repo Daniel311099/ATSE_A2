@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from "express";
 const cors = require("cors");
-import { closeDB, loadWord, openDB } from "./db";
+import { closeDB, createUser, loadWord, openDB } from "./db";
 
 const db = openDB();
 
@@ -24,6 +24,17 @@ app.get("/word", (req: Request, res: Response) => {
         res.send(row.word);
     });
 });
+
+app.post('/user', (req, res) => {
+    const { username } = req.body;
+    createUser(db, username, (err: any, lastID: any) => {
+        if (err) {
+            res.status(500).send(err.message);
+        }
+        res.send({ id: lastID });
+    });
+});
+
 
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);

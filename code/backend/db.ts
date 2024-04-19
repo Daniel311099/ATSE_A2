@@ -48,3 +48,15 @@ export function loadWord(
         }
     );
 }
+
+export function createUser(db: sqlite3.Database, username: string, callback: any) {
+    const query = `INSERT INTO User (username) VALUES (?)`;
+
+    db.run(query, [username], function(err) {
+        if (err) {
+            callback(err);
+        } else {
+            callback(null, this.lastID);
+        }
+    });
+}
