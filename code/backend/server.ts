@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from "express";
 const cors = require("cors");
-import { closeDB, createUser, loadWord, openDB } from "./db";
+import { addScore, closeDB, createUser, loadWord, openDB } from "./db";
 
 const db = openDB();
 
@@ -35,6 +35,19 @@ app.post('/user', (req, res) => {
     });
 });
 
+app.post('/score', (req, res) => {
+    const { user_id, score, difficulty } = req.body;
+
+    addScore(db, user_id, score, difficulty, (err: any) => {
+        if (err) {
+            res
+                .status(500)
+                .send(err.message);
+        }
+        res.send("Score added successfully");
+    });
+    
+});
 
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);

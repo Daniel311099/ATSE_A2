@@ -60,3 +60,15 @@ export function createUser(db: sqlite3.Database, username: string, callback: any
         }
     });
 }
+
+export function addScore(db: sqlite3.Database, user_id: number, score: number, difficulty: string, callback: any) {
+    const query = `INSERT INTO Score (user_id, score, difficulty) VALUES (?, ?, ?)`;
+
+    db.run(query, [user_id, score, difficulty], function(err) {
+        if (err) {
+            callback(err);
+        } else {
+            callback(null, this.lastID);
+        }
+    });
+}
