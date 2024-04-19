@@ -6,6 +6,7 @@ const db = openDB();
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 const port = 3000;
 
@@ -26,6 +27,7 @@ app.get("/word", (req: Request, res: Response) => {
 });
 
 app.post('/user', (req, res) => {
+    console.log(req.body);
     const { username } = req.body;
     createUser(db, username, (err: any, lastID: any) => {
         if (err) {
