@@ -4,6 +4,7 @@ import GuessInput from "./components/GuessInput";
 import ScoreAndAttempt from "./components/ScoreAndAttempt";
 import HangMan from "./components/Hangman";
 import Result from "./components/Result";
+import Scoreboard from "./components/Scoreboard";
 
 // const URL = "http://localhost:3000/word";
 
@@ -21,6 +22,23 @@ function App() {
     useEffect(() => {
         fetchWord();
     }, [difficulty]);
+
+    useEffect(() => {
+        if (win && userId) {
+            fetch("http://localhost:3000/score", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ user_id: userId, score, difficulty }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    setDisplay(`User ${username} scored ${score}`);
+                })
+                .catch((err) => console.error(err));
+        }
+    }, [win]);
 
     const fetchWord = () => {
         setGuesses("");
@@ -102,6 +120,7 @@ function App() {
                     Register
                 </button>
             </div>
+            <Scoreboard />
         </>
     );
 }
