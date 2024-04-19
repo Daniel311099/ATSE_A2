@@ -1,13 +1,11 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 type WordDisplayProps = {
     word: string;
     guesses: string[];
-    setWin: React.Dispatch<React.SetStateAction<string[]>>;
-
 };
 
-export default function WordDisplay({ word, guesses,setWin }: WordDisplayProps) {
+export default function WordDisplay({ word, guesses }: WordDisplayProps) {
     const display = useMemo(() => {
         return word
             .split("")
@@ -16,11 +14,5 @@ export default function WordDisplay({ word, guesses,setWin }: WordDisplayProps) 
             })
             .join(" ");
     }, [word, guesses]);
-    useEffect(()=>{
-        if(!display.includes('_')){
-            setWin(true);
-        }
-    },[display])
-
     return <h1>{display}</h1>;
 }
