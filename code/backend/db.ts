@@ -75,12 +75,12 @@ export function addScore(db: sqlite3.Database, user_id: number, score: number, d
 }
 
 export function getScores(db: sqlite3.Database, difficulty: string | undefined, callback: any) {
-    let query = `SELECT * FROM Score JOIN Users ON Score.user_id = User.id`;
+    let query = `SELECT * FROM Score LEFT JOIN User ON Score.user_id = User.id`;
 
     if (difficulty) {
-        query += ` WHERE difficulty = ?`;
+        // query += ` WHERE difficulty = ?`;
         query += ` ORDER BY score DESC`;
-        db.all(query, [difficulty], (err, rows) => {
+        db.all(query, [], (err, rows) => {
             if (err) {
                 callback(err);
             } else {
